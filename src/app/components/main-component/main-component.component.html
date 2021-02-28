@@ -1,5 +1,5 @@
-<div class="filedrop" [class.dragging]="dragging" appDragAndDrop (dragging)="dragging=$event" (fileAdded)="addFile($event)">
-  Drop files here
+<div class="filedrop" (click)="fileDialogOpen()" [class.dragging]="dragging" appDragAndDrop (dragging)="dragging=$event" (fileAdded)="addFile($event)">
+  Drop files here or click to open
 </div>
 
 <ul>
@@ -8,5 +8,4 @@
 
 <input type="file" (change)="addFileNew($event)" multiple />
 
-<button class="btn btn-primary mr-1" (click)="fileDialogOpen()">Add files</button>
 <button class="btn btn-primary" (click)="clear()">Clear</button>

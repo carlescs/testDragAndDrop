@@ -33,19 +33,17 @@ export class DragAndDropDirective {
     ev.preventDefault();
     if (ev.dataTransfer.items) {
       // Use DataTransferItemList interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      for (let item of ev.dataTransfer.items) {
         // If dropped items aren't files, reject them
-        if (ev.dataTransfer.items[i].kind === 'file') {
-          var file = ev.dataTransfer.items[i].getAsFile();
+        if (item.kind === 'file') {
+          let file = item.getAsFile();
           this.fileAdded.emit(file);
-          console.log('... file[' + i + '].name = ' + file.name + ', size=' + file.size);
         }
       }
     } else {
       // Use DataTransfer interface to access the file(s)
-      for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-        console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name + ', size=' + ev.dataTransfer.files[i].size);
-        this.fileAdded.emit(ev.dataTransfer.files[i]);
+      for (let file of ev.dataTransfer.files) {
+        this.fileAdded.emit(file);
       }
     }
     this.onDragLeave();
