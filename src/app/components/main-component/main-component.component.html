@@ -1,1 +1,11 @@
-<div class="full" appDragAndDrop>main-component works!</div>
+<div class="filedrop" [class.dragging]="dragging" appDragAndDrop (dragging)="dragging=$event" (fileAdded)="addFile($event)">
+  drop files here
+</div>
+
+<ul>
+  <li *ngFor="let file of files">{{file.name}} - {{file.size}} <img class="img" [src]="this.urls[file.name]" alt="file" /></li>
+</ul>
+
+<input type="file" (change)="addFileNew($event)" multiple />
+
+<button (click)="fileDialogOpen()">Add files</button><button (click)="clear()">Clear</button>
