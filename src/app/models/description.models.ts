@@ -1,4 +1,4 @@
 ﻿export class Description{
-  Tags:string[];
-  Captions:string[];
+  tags:string[];
+  captions:string[];
 }
