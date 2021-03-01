@@ -51,7 +51,9 @@ export class MainComponentComponent implements OnDestroy {
   public analyze(): void {
     for (let file of this.files) {
       if (this.isImage(file.file.type))
-        this.subscriptions.push(this.descriptionService.getDescription(file.file).subscribe(desc => file.description = desc.Captions[0]));
+        this.subscriptions.push(this.descriptionService.getDescription(file.file).subscribe(desc => {
+          file.description = desc.captions[0];
+        }));
     }
   }
 
