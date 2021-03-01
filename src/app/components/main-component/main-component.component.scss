@@ -3,6 +3,15 @@
   border: 2px dashed dimgray;
 }
 
+td{
+  vertical-align: center;
+  text-align: center;
+  &.fit{
+    width: 1px;
+  }
+}
+
+
 .filedrop{
   height: 300px;
   width: 100%;

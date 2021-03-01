@@ -2,16 +2,24 @@
   Drop files here or click to open
 </div>
 
-<ul>
-  <li *ngFor="let file of files">
-    {{file.file.name}} - {{file.file.size}}<br>
-    {{file.description}}
-    <img class="img" *ngIf="isImage(file.file.type)" [src]="this.urls[file.file.name]" alt="file" />
-  </li>
-</ul>
-
 <input type="file" (change)="addFileNew($event)" multiple />
 
 <button class="btn btn-primary m-1" (click)="clear()">Clear</button>
 
 <button class="btn btn-primary" (click)="analyze()">Analyze</button>
+
+<table class="table table-striped">
+  <tbody>
+  <tr *ngFor="let file of files">
+    <td class="fit"><img class="img" *ngIf="isImage(file.file.type)" [src]="this.urls[file.file.name]" alt="file" /></td>
+    <td>
+      <div *ngIf="!file.descriptionLoading">
+        {{file.description}}
+      </div>
+      <div *ngIf="file.descriptionLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
