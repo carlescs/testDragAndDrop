@@ -1,28 +1,35 @@
-<div class="filedrop" (click)="fileDialogOpen()" [class.dragging]="dragging" appDragAndDrop (dragging)="dragging=$event" (fileAdded)="addFile($event)">
-  Drop files here or click to open
+<div class="d-flex flex-column full">
+  <div class="flex-fit">
+    <div class="filedrop" (click)="fileDialogOpen()" [class.dragging]="dragging" appDragAndDrop
+         (dragging)="dragging=$event" (fileAdded)="addFile($event)">
+      Drop files here or click to open
+    </div>
+
+    <input type="file" (change)="addFileNew($event)" multiple/>
+
+    <button class="btn btn-primary m-1" (click)="clear()">Clear</button>
+
+    <button class="btn btn-primary" (click)="analyze()">Analyze</button>
+  </div>
+  <div class="flex-grow-1 flex-shrink-1 overflow-y-overlay">
+    <table class="table table-striped">
+      <tbody>
+      <tr *ngFor="let file of files">
+        <td class="fit"><img class="img" *ngIf="isImage(file.file.type)" [src]="this.urls[file.file.name]" alt="file"/>
+        </td>
+        <td>
+          <div *ngIf="!file.descriptionLoading">
+            {{file.description}}
+          </div>
+          <div *ngIf="file.descriptionLoading">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" [style.width]="file.progress+'%'" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-
-<input type="file" (change)="addFileNew($event)" multiple />
-
-<button class="btn btn-primary m-1" (click)="clear()">Clear</button>
-
-<button class="btn btn-primary" (click)="analyze()">Analyze</button>
-
-<table class="table table-striped">
-  <tbody>
-  <tr *ngFor="let file of files">
-    <td class="fit"><img class="img" *ngIf="isImage(file.file.type)" [src]="this.urls[file.file.name]" alt="file" /></td>
-    <td>
-      <div *ngIf="!file.descriptionLoading">
-        {{file.description}}
-      </div>
-      <div *ngIf="file.descriptionLoading">
-        <i class="fas fa-spinner fa-spin"></i> {{file.progress}}%
-      </div>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" [style.width]="file.progress+'%'" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
