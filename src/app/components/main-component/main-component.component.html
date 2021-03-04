@@ -17,7 +17,10 @@
         {{file.description}}
       </div>
       <div *ngIf="file.descriptionLoading">
-        <i class="fas fa-spinner fa-spin"></i>
+        <i class="fas fa-spinner fa-spin"></i> {{file.progress}}%
+      </div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" [style.width]="file.progress+'%'" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
     </td>
   </tr>
