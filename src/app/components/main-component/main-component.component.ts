@@ -2,7 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {DescriptionService} from '../../services/description.service';
 import {Subscription} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import {HttpEventType} from '@angular/common/http';
 
 @Component({
   selector: 'app-main-component',
@@ -15,7 +15,8 @@ export class MainComponentComponent implements OnDestroy {
   public files: {
     descriptionLoading: Boolean;
     file: File,
-    description?: string
+    description?: string,
+    progress: number
   }[] = [];
   public urls: { [index: string]: SafeUrl } = {};
   private objects = [];
@@ -30,7 +31,7 @@ export class MainComponentComponent implements OnDestroy {
   }
 
   public addFile(file: File): void {
-    this.files.push({file: file, descriptionLoading: false});
+    this.files.push({file: file, descriptionLoading: false, progress:0});
     let value: string = URL.createObjectURL(file);
     this.objects.push(value);
     this.urls[file.name] = this.sanitizer.bypassSecurityTrustUrl(value);
@@ -55,15 +56,20 @@ export class MainComponentComponent implements OnDestroy {
 
   public analyze(): void {
     for (let file of this.files) {
-      file.descriptionLoading = true;
-      if (this.isImage(file.file.type) && file.description == null)
+      if (this.isImage(file.file.type) && file.description == null) {
+        file.descriptionLoading = true;
         this.subscriptions.push(this.descriptionService.getDescription(file.file)
-          .subscribe(desc => {
-            file.description = desc.captions[0];
-            file.descriptionLoading=false;
-          },e=>{
-            file.descriptionLoading=false;
+          .subscribe(event => {
+            if (event.type == HttpEventType.Response) {
+              file.description = event.body.captions[0];
+              file.descriptionLoading = false;
+            } else if (event.type == HttpEventType.UploadProgress) {
+              file.progress = Math.round(100 * event.loaded / event.total);
+            }
+          }, e => {
+            file.descriptionLoading = false;
           }));
+      }
     }
   }
 
