@@ -1,7 +1,7 @@
 <div class="d-flex flex-column full">
   <div class="flex-fit">
-    <div class="filedrop" (click)="fileDialogOpen()" [class.dragging]="dragging" appDragAndDrop
-         (dragging)="dragging=$event" (fileAdded)="addFile($event)">
+    <div class="filedrop" (click)="fileDialogOpen()" appDragAndDrop
+         (onDragging)="dragging=$event" (onFileAdded)="addFile($event)">
       Drop files here or click to open
     </div>
 
