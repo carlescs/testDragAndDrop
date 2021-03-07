@@ -4,6 +4,8 @@ import {DescriptionService} from '../../services/description.service';
 import {Subscription} from 'rxjs';
 import {HttpEventType} from '@angular/common/http';
 
+import {remove} from 'lodash-es';
+
 @Component({
   selector: 'app-main-component',
   templateUrl: './main-component.component.html',
@@ -16,10 +18,10 @@ export class MainComponentComponent implements OnDestroy {
     descriptionLoading: Boolean;
     file: File,
     description?: string,
-    progress: number
+    progress: number,
+    objectUrl?:string,
+    safeUrl?:SafeUrl
   }[] = [];
-  public urls: { [index: string]: SafeUrl } = {};
-  private objects = [];
   private subscriptions: Subscription[] = [];
 
   constructor(private sanitizer: DomSanitizer, private descriptionService: DescriptionService) {
@@ -31,17 +33,13 @@ export class MainComponentComponent implements OnDestroy {
   }
 
   public addFile(file: File): void {
-    this.files.push({file: file, descriptionLoading: false, progress:0});
     let value: string = URL.createObjectURL(file);
-    this.objects.push(value);
-    this.urls[file.name] = this.sanitizer.bypassSecurityTrustUrl(value);
+    this.files.push({file: file, descriptionLoading: false, progress:0,objectUrl: value, safeUrl:this.sanitizer.bypassSecurityTrustUrl(value)});
   }
 
   public clear(): void {
-    this.objects.forEach(o => URL.revokeObjectURL(o));
-    this.objects = [];
+    this.files.forEach(o => URL.revokeObjectURL(o.objectUrl));
     this.files = [];
-    this.urls = {};
   }
 
   public addFileNew($event: any): void {
@@ -75,5 +73,10 @@ export class MainComponentComponent implements OnDestroy {
 
   public isImage(type: string): boolean {
     return type == 'image/jpeg' || type == 'image/png' || type == 'image/jpg';
+  }
+
+  public deleteItem(file) {
+    URL.revokeObjectURL(file.objectUrl);
+    remove(this.files,f=>file.file==f.file);
   }
 }

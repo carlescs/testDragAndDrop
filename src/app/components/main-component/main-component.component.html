@@ -16,7 +16,7 @@
       <tbody>
       <tr *ngFor="let file of files">
         <td class="fit">
-          <img class="img" *ngIf="isImage(file.file.type)" [src]="this.urls[file.file.name]" alt="file"/>
+          <img class="img" *ngIf="isImage(file.file.type)" [src]="file.safeUrl" alt="file"/>
           <span *ngIf="!isImage(file.file.type)">{{file.file.name}}</span>
         </td>
         <td>
@@ -29,6 +29,9 @@
           <div class="progress" *ngIf="isImage(file.file.type)">
             <div class="progress-bar" role="progressbar" [style.width]="file.progress+'%'" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100">{{file.progress}}%</div>
           </div>
+        </td>
+        <td class="fit">
+          <i class="fas fa-trash" (click)="deleteItem(file)"></i>
         </td>
       </tr>
       </tbody>
