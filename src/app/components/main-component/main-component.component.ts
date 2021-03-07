@@ -1,9 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {DescriptionService} from '../../services/description.service';
 import {Subscription} from 'rxjs';
 import {HttpEventType} from '@angular/common/http';
 
+import {AddedFile} from '../../models/description.models';
 import {remove} from 'lodash-es';
 
 @Component({
@@ -14,14 +15,7 @@ import {remove} from 'lodash-es';
 export class MainComponentComponent implements OnDestroy {
   public dragging: boolean;
 
-  public files: {
-    descriptionLoading: Boolean;
-    file: File,
-    description?: string,
-    progress: number,
-    objectUrl?:string,
-    safeUrl?:SafeUrl
-  }[] = [];
+  public files: AddedFile[] = [];
   private subscriptions: Subscription[] = [];
 
   constructor(private sanitizer: DomSanitizer, private descriptionService: DescriptionService) {
@@ -75,7 +69,7 @@ export class MainComponentComponent implements OnDestroy {
     return type == 'image/jpeg' || type == 'image/png' || type == 'image/jpg';
   }
 
-  public deleteItem(file) {
+  public deleteItem(file:AddedFile) {
     URL.revokeObjectURL(file.objectUrl);
     remove(this.files,f=>file.file==f.file);
   }
