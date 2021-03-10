@@ -1,8 +1,3 @@
-.dragging{
-  box-sizing: border-box;
-  border: 2px dashed dimgray;
-}
-
 td{
   vertical-align: center;
   text-align: center;
@@ -19,10 +14,14 @@ td{
 .filedrop{
   height: 300px;
   width: 100%;
-  background: adjust-color(red,$alpha:-.3);
+  border: 2px dashed dimgray;
   display:flex;
   align-items: center;
   justify-content: center;
+
+  &.dragging{
+    border: 2px dashed red;
+  }
 }
 
 input[type=file]{
