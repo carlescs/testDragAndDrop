@@ -13,7 +13,7 @@ import {remove} from 'lodash-es';
   styleUrls: ['./main-component.component.scss']
 })
 export class MainComponentComponent implements OnDestroy {
-  public dragging: boolean;
+
 
   public files: AddedFile[] = [];
   private subscriptions: Subscription[] = [];
