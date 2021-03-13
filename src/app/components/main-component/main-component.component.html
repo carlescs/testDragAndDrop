@@ -30,6 +30,9 @@
             <div class="progress-bar" role="progressbar" [style.width]="file.progress+'%'" aria-valuenow="{{file.progress}}" aria-valuemin="0" aria-valuemax="100">{{file.progress}}%</div>
           </div>
         </td>
+        <td>
+          {{file.tags?.join(', ')}}
+        </td>
         <td class="fit">
           <span (click)="deleteItem(file)"><i class="fas fa-trash cursor-pointer"></i></span>
         </td>

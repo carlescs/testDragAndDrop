@@ -54,11 +54,12 @@ export class MainComponentComponent implements OnDestroy {
           .subscribe(event => {
             if (event.type == HttpEventType.Response) {
               file.description = event.body.captions[0];
+              file.tags=event.body.tags;
               file.descriptionLoading = false;
             } else if (event.type == HttpEventType.UploadProgress) {
               file.progress = Math.round(100 * event.loaded / event.total);
             }
-          }, e => {
+          }, () => {
             file.descriptionLoading = false;
           }));
       }
