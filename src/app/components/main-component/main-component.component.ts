@@ -72,6 +72,6 @@ export class MainComponentComponent implements OnDestroy {
 
   public deleteItem(file:AddedFile) {
     URL.revokeObjectURL(file.objectUrl);
-    remove(this.files,f=>file.file==f.file);
+    remove(this.files,(f: { file: File })=>file.file==f.file);
   }
 }
